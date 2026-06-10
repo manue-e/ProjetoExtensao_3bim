@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda - TechAgenda</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="topbar">
+
+        <div class="logo">
+            <h2>TechAgenda</h2>
+        </div>
+
+        <div class="topbar-actions">
+         
+            <button id="btnNovoAgendamento" class="btn-primary">
+                + Novo Agendamento
+            </button>
+
+            <a href="index.html" class="btn-secondary">
+                Sair
+            </a>
+
+        </div>
+
+    </header>
+
+    <main class="agenda-container">
+
+        <aside class="sidebar">
+
+            <h3>Visualização</h3>
+
+            <button id="btnMensal" class="view-btn active">
+                Mensal
+            </button>
+
+            <button id="btnSemanal" class="view-btn">
+                Semanal
+            </button>
+
+            <button id="btnDiario" class="view-btn">
+                Diário
+            </button>
+            <hr>
+
+            <h3>Próximos Serviços</h3>
+
+            <ul id="proximosServicos" class="event-list">
+
+</ul>
+
+        </aside>
+
+        <section class="agenda-content">
+
+            
+            <div class="agenda-header">
+
+            <button id="btnMesAnterior">
+                &lt;
+            </button>
+
+            <h2 id="tituloMes">
+                Junho 2026
+            </h2>
+
+            <button id="btnProximoMes">
+                &gt;
+            </button>
+
+        </div>
+
+        <div id="calendarGrid" class="calendar-grid">
+
+        </div>
+
+        </section>
+
+    </main>
+
+        <div id="modalAgendamento" class="modal">
+
+        <div class="modal-content">
+
+        <span class="close">&times;</span>
+
+            <h2>Novo Agendamento</h2>
+           
+
+            <form id="formAgendamento">
+
+                <div class="input-group">
+                    <label>Serviço</label>
+
+                    <select id="servico">
+                        <option>Suporte Técnico</option>
+                        <option>Consultoria TI</option>
+                        <option>Monitoramento</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Data</label>
+                    <input type="date" id="dataAgendamento">
+                </div>
+
+                <div class="input-group">
+                    <label>Horário</label>
+                    <input type="time" id="horarioAgendamento">
+                </div>
+
+                <div class="input-group">
+                    <label>Observações</label>
+
+                    <textarea
+                        id="observacoes"
+                        rows="4"
+                        placeholder="Informações adicionais..."
+                    ></textarea>
+                </div>
+
+                <button type="submit" class="btn-salvar">
+                    Salvar Agendamento
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <div id="modalEditar" class="modal">
+
+    <div class="modal-content">
+
+      
+        <span class="close">&times;</span>
+
+        <h2>Editar Agendamento</h2>
+
+
+        <form id="formEditar">
+
+            <div class="input-group">
+                <label>Serviço</label>
+
+                <select id="editarServico">
+
+                    <option>Suporte Técnico</option>
+                    <option>Consultoria TI</option>
+                    <option>Monitoramento</option>
+
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Horário</label>
+
+                <input
+                    type="time"
+                    id="editarHorario">
+            </div>
+
+            <div class="input-group">
+                <label>Observações</label>
+
+                <textarea
+                    id="editarObservacoes"
+                    rows="4">
+                </textarea>
+            </div>
+
+            <button
+                type="submit"
+                class="btn-salvar">
+
+                Salvar Alterações
+
+            </button>
+
+            <button
+                type="button"
+                id="btnCancelarAgendamento"
+                class="btn-cancelar">
+
+                Cancelar Agendamento
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+    <script src="js/agenda.js"></script>
+
+</body>
+
+</html>

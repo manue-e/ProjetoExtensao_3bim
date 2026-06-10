@@ -1,0 +1,889 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f5f7fa;
+    color:#333;
+}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:auto;
+}
+
+header{
+    background:#0d6efd;
+    padding:20px 0;
+}
+
+header .container{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+header h1{
+    color:white;
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+    gap:20px;
+}
+
+nav a{
+    text-decoration:none;
+    color:white;
+    font-weight:bold;
+}
+
+.btn-login{
+    background:white;
+    color:#0d6efd;
+    padding:10px 20px;
+    border-radius:5px;
+}
+
+.hero{
+    height:80vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    background:linear-gradient(
+        rgba(0,0,0,0.5),
+        rgba(0,0,0,0.5)
+    ),
+    url('../img/banner.jpg');
+
+    background-size:cover;
+    background-position:center;
+}
+
+.hero-content{
+    color:white;
+}
+
+.hero h2{
+    font-size:3rem;
+    margin-bottom:20px;
+}
+
+.hero p{
+    font-size:1.2rem;
+    margin-bottom:30px;
+}
+
+.btn-principal{
+    background:#0d6efd;
+    color:white;
+    padding:15px 30px;
+    text-decoration:none;
+    border-radius:8px;
+}
+
+.servicos{
+    padding:80px 10%;
+}
+
+.servicos h2{
+    text-align:center;
+    margin-bottom:50px;
+}
+
+.cards{
+    display:flex;
+    gap:30px;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+.card{
+    width:350px;
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+.card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.card-info{
+    padding:25px;
+    text-align:center;
+}
+
+.card-info h3{
+    margin-bottom:15px;
+}
+
+.sobre{
+    padding:80px 15%;
+    text-align:center;
+    background:white;
+}
+
+.contato{
+    padding:80px 10%;
+}
+
+.contato h2{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.contato form{
+    max-width:600px;
+    margin:auto;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.contato input,
+.contato textarea{
+    padding:15px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+.contato textarea{
+    height:150px;
+}
+
+.contato button{
+    background:#0d6efd;
+    color:white;
+    border:none;
+    padding:15px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+footer{
+    background:#0d6efd;
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+@media(max-width:768px){
+
+    .hero h2{
+        font-size:2rem;
+    }
+
+    nav ul{
+        flex-direction:column;
+        gap:10px;
+    }
+
+    header .container{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    
+
+}
+
+/* =======================
+   LOGIN
+======================= */
+
+.login-container{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(
+        135deg,
+        #0d6efd,
+        #0046b8
+    );
+}
+
+.login-card{
+    width:100%;
+    max-width:420px;
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+.login-header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.login-header h1{
+    color:#0d6efd;
+    margin-bottom:10px;
+}
+
+.login-header p{
+    color:#666;
+}
+
+.login-form{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.input-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.input-group label{
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.input-group input{
+    padding:14px;
+    border:1px solid #dcdcdc;
+    border-radius:8px;
+    font-size:16px;
+}
+
+.input-group input:focus{
+    outline:none;
+    border-color:#0d6efd;
+}
+
+.login-form button{
+    background:#0d6efd;
+    color:white;
+    border:none;
+    padding:15px;
+    border-radius:8px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.login-form button:hover{
+    background:#0056d2;
+}
+
+.login-links{
+    margin-top:20px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.login-links a{
+    text-decoration:none;
+    color:#0d6efd;
+    font-size:14px;
+}
+
+.btn-voltar{
+    display:block;
+    text-align:center;
+    margin-top:25px;
+    text-decoration:none;
+    color:#555;
+    font-weight:600;
+}
+
+/* ====================
+   AGENDA
+==================== */
+
+.topbar{
+    background:#0d6efd;
+    color:white;
+    padding:15px 40px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.topbar-actions{
+    display:flex;
+    gap:15px;
+}
+
+.btn-primary{
+    background:white;
+    color:#0d6efd;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.btn-secondary{
+    text-decoration:none;
+    color:white;
+    border:1px solid white;
+    padding:12px 20px;
+    border-radius:8px;
+}
+
+.agenda-container{
+    display:flex;
+    min-height:calc(100vh - 80px);
+}
+
+.sidebar{
+    width:280px;
+    background:#f8f9fa;
+    padding:25px;
+    border-right:1px solid #ddd;
+}
+
+.sidebar h3{
+    margin-bottom:15px;
+}
+
+.view-btn{
+    width:100%;
+    padding:12px;
+    margin-bottom:10px;
+    border:none;
+    background:white;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.view-btn.active{
+    background:#0d6efd;
+    color:white;
+}
+
+.event-list{
+    list-style:none;
+    margin-top:20px;
+}
+
+.event-list li{
+    background:white;
+    padding:12px;
+    margin-bottom:10px;
+    border-radius:8px;
+}
+
+.event-list span{
+    display:block;
+    margin-top:5px;
+    color:#666;
+    font-size:14px;
+}
+
+.agenda-content{
+    flex:1;
+    padding:30px;
+}
+
+.agenda-header{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+    margin-bottom:30px;
+}
+
+.agenda-header button{
+    width:40px;
+    height:40px;
+    border:none;
+    border-radius:50%;
+    cursor:pointer;
+    background:#0d6efd;
+    color:white;
+}
+
+.calendar-grid{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:10px;
+}
+
+.day-header{
+    text-align:center;
+    font-weight:bold;
+    padding:15px;
+}
+
+.day{
+    min-height:120px;
+    background:white;
+    border-radius:10px;
+    padding:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+.event{
+    margin-top:10px;
+    background:#0d6efd;
+    color:white;
+    padding:5px;
+    border-radius:5px;
+    font-size:12px;
+}
+
+@media(max-width:900px){
+
+    .agenda-container{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+    }
+
+    .calendar-grid{
+        overflow-x:auto;
+    }
+
+}
+
+/* ======================
+   CADASTRO
+====================== */
+
+.cadastro-container{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(
+        135deg,
+        #0d6efd,
+        #0046b8
+    );
+    padding:30px;
+}
+
+.cadastro-card{
+    width:100%;
+    max-width:550px;
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+.cadastro-header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.cadastro-header h1{
+    color:#0d6efd;
+    margin-bottom:10px;
+}
+
+.cadastro-header p{
+    color:#666;
+}
+
+.cadastro-form{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.cadastro-form input,
+.cadastro-form select{
+    width:100%;
+    padding:14px;
+    border:1px solid #dcdcdc;
+    border-radius:8px;
+    font-size:16px;
+}
+
+.cadastro-form input:focus,
+.cadastro-form select:focus{
+    outline:none;
+    border-color:#0d6efd;
+}
+
+.cadastro-form button{
+    background:#0d6efd;
+    color:white;
+    border:none;
+    padding:15px;
+    border-radius:8px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.cadastro-form button:hover{
+    background:#0056d2;
+}
+
+.cadastro-links{
+    text-align:center;
+    margin-top:20px;
+}
+
+.cadastro-links a{
+    text-decoration:none;
+    color:#0d6efd;
+    font-weight:bold;
+}
+
+.btn-voltar{
+    display:block;
+    text-align:center;
+    margin-top:25px;
+    text-decoration:none;
+    color:#555;
+    font-weight:600;
+}
+
+/* =========================
+DASHBOARD ADMINISTRATIVO
+========================= */
+
+.dashboard-container{
+    padding:30px;
+    background:#f5f7fa;
+    min-height:100vh;
+}
+
+.dashboard-cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-bottom:30px;
+}
+
+.card-dashboard{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+    text-align:center;
+}
+
+.card-dashboard h3{
+    color:#666;
+    margin-bottom:15px;
+    font-size:18px;
+}
+
+.card-dashboard span{
+    font-size:36px;
+    font-weight:bold;
+    color:#0d6efd;
+}
+
+.filtros-dashboard,
+.cliente-destaque,
+.servicos-populares,
+.ranking-clientes,
+.ultimos-agendamentos{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    margin-bottom:25px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+}
+
+.filtros-dashboard h2,
+.cliente-destaque h2,
+.servicos-populares h2,
+.ranking-clientes h2,
+.ultimos-agendamentos h2{
+    margin-bottom:20px;
+    color:#333;
+}
+
+.filtro-container{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.filtro-container input{
+    flex:1;
+    min-width:250px;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+.cliente-card{
+    background:#f8f9fa;
+    padding:20px;
+    border-radius:10px;
+    border-left:5px solid #0d6efd;
+}
+
+.cliente-card h3{
+    margin-bottom:15px;
+    color:#0d6efd;
+}
+
+.cliente-card p{
+    margin-bottom:10px;
+}
+
+.servico-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px;
+    margin-bottom:10px;
+    background:#f8f9fa;
+    border-radius:10px;
+}
+
+.servico-item strong{
+    color:#0d6efd;
+}
+
+.tabela-dashboard{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.tabela-dashboard thead{
+    background:#0d6efd;
+    color:white;
+}
+
+.tabela-dashboard th,
+.tabela-dashboard td{
+    padding:15px;
+    text-align:left;
+}
+
+.tabela-dashboard tbody tr{
+    border-bottom:1px solid #eee;
+}
+
+.tabela-dashboard tbody tr:hover{
+    background:#f8f9fa;
+}
+
+.btn-filtrar{
+    background:#0d6efd;
+    color:white;
+    border:none;
+    padding:12px 25px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.btn-filtrar:hover{
+    background:#0056d2;
+}
+
+@media(max-width:768px){
+
+    .dashboard-container{
+        padding:15px;
+    }
+
+    .dashboard-cards{
+        grid-template-columns:1fr;
+    }
+
+    .filtro-container{
+        flex-direction:column;
+    }
+
+    .filtro-container input{
+        width:100%;
+    }
+
+    .tabela-dashboard{
+        display:block;
+        overflow-x:auto;
+    }
+
+    .calendar-grid{
+    display:grid;
+    grid-template-columns:repeat(7, 1fr);
+    gap:10px;
+    margin-top:20px;
+}
+
+.day-header{
+    background:#0d6efd;
+    color:white;
+    padding:15px;
+    text-align:center;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.day{
+    background:white;
+    min-height:100px;
+    padding:10px;
+    border-radius:8px;
+    box-shadow:0 2px 5px rgba(0,0,0,.1);
+}
+
+.event{
+    background:#0d6efd;
+    color:white;
+    margin-top:5px;
+    padding:5px;
+    border-radius:5px;
+    font-size:12px;
+}
+
+}
+
+/* ===================
+   MODAL AGENDAMENTO
+=================== */
+
+.modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:rgba(0,0,0,.5);
+
+    justify-content:center;
+    align-items:center;
+
+    z-index:1000;
+}
+
+.modal-content{
+    background:white;
+    width:90%;
+    max-width:500px;
+
+    padding:30px;
+
+    border-radius:15px;
+
+    position:relative;
+}
+
+.close{
+    position:absolute;
+
+    right:20px;
+    top:15px;
+
+    font-size:30px;
+
+    cursor:pointer;
+}
+
+.modal-content h2{
+    margin-bottom:20px;
+}
+
+.modal-content select,
+.modal-content input,
+.modal-content textarea{
+    width:100%;
+
+    padding:12px;
+
+    border:1px solid #ddd;
+
+    border-radius:8px;
+
+    margin-top:5px;
+}
+
+.btn-salvar{
+    width:100%;
+
+    margin-top:20px;
+
+    background:#0d6efd;
+
+    color:white;
+
+    border:none;
+
+    padding:15px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+}
+
+.btn-cancelar{
+    width:100%;
+    margin-top:10px;
+
+    background:#dc3545;
+
+    color:white;
+
+    border:none;
+
+    padding:15px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+}
+
+.event{
+    margin-top:8px;
+    background:#0d6efd;
+    color:white;
+    padding:6px;
+    border-radius:6px;
+    font-size:12px;
+    cursor:pointer;
+}
+
+.event small{
+    display:block;
+    margin-top:3px;
+    opacity:.9;
+}
+
+.btn-fechar-modal{
+    position:absolute;
+    top:15px;
+    right:15px;
+
+    width:35px;
+    height:35px;
+
+    border:none;
+    border-radius:50%;
+
+    background:#dc3545;
+    color:white;
+
+    cursor:pointer;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.btn-fechar-modal:hover{
+    background:#bb2d3b;
+}

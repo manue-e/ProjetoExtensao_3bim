@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Administrativo - TechAgenda</title>
+
+```
+<link rel="stylesheet" href="css/style.css">
+```
+
+</head>
+
+<body>
+
+```
+<header class="topbar">
+
+    <div class="logo">
+        <h2>TechAgenda - Dashboard</h2>
+    </div>
+
+    <div class="topbar-actions">
+        <a href="agenda.html" class="btn-primary">
+            Agenda
+        </a>
+
+        <a href="login.html" class="btn-secondary">
+            Sair
+        </a>
+    </div>
+
+</header>
+
+<main class="dashboard-container">
+
+    <section class="dashboard-cards">
+
+        <div class="card-dashboard">
+            <h3>Clientes</h3>
+            <span>128</span>
+        </div>
+
+        <div class="card-dashboard">
+            <h3>Agendamentos</h3>
+            <span>342</span>
+        </div>
+
+        <div class="card-dashboard">
+            <h3>Este Mês</h3>
+            <span>48</span>
+        </div>
+
+        <div class="card-dashboard">
+            <h3>Cancelados</h3>
+            <span>7</span>
+        </div>
+
+    </section>
+
+    <section class="filtros-dashboard">
+
+        <h2>Pesquisar Cliente</h2>
+
+        <div class="filtro-container">
+
+            <input
+                type="text"
+                placeholder="Digite o nome do cliente..."
+            >
+
+            <button class="btn-filtrar">
+                Buscar
+            </button>
+
+        </div>
+
+    </section>
+
+    <section class="cliente-destaque">
+
+        <h2>🏆 Cliente Destaque</h2>
+
+        <div class="cliente-card">
+
+            <h3>João Silva</h3>
+
+            <p>
+                Total de Agendamentos:
+                <strong>17</strong>
+            </p>
+
+            <p>
+                Último Serviço:
+                <strong>Consultoria TI</strong>
+            </p>
+
+        </div>
+
+    </section>
+
+    <section class="servicos-populares">
+
+        <h2>Serviços Mais Procurados</h2>
+
+        <div class="servico-item">
+            <span>Suporte Técnico</span>
+            <strong>52%</strong>
+        </div>
+
+        <div class="servico-item">
+            <span>Consultoria TI</span>
+            <strong>30%</strong>
+        </div>
+
+        <div class="servico-item">
+            <span>Monitoramento</span>
+            <strong>18%</strong>
+        </div>
+
+    </section>
+
+    <section class="ranking-clientes">
+
+        <h2>Ranking de Clientes</h2>
+
+        <table class="tabela-dashboard">
+
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Agendamentos</th>
+                    <th>Último Serviço</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>João Silva</td>
+                    <td>17</td>
+                    <td>Consultoria TI</td>
+                </tr>
+
+                <tr>
+                    <td>Maria Souza</td>
+                    <td>14</td>
+                    <td>Suporte Técnico</td>
+                </tr>
+
+                <tr>
+                    <td>Carlos Lima</td>
+                    <td>12</td>
+                    <td>Monitoramento</td>
+                </tr>
+
+                <tr>
+                    <td>Ana Santos</td>
+                    <td>10</td>
+                    <td>Consultoria TI</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+    <section class="ultimos-agendamentos">
+
+        <h2>Últimos Agendamentos</h2>
+
+        <table class="tabela-dashboard">
+
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Serviço</th>
+                    <th>Data</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>João Silva</td>
+                    <td>Consultoria TI</td>
+                    <td>10/06/2026</td>
+                    <td>Confirmado</td>
+                </tr>
+
+                <tr>
+                    <td>Maria Souza</td>
+                    <td>Suporte Técnico</td>
+                    <td>10/06/2026</td>
+                    <td>Confirmado</td>
+                </tr>
+
+                <tr>
+                    <td>Carlos Lima</td>
+                    <td>Monitoramento</td>
+                    <td>11/06/2026</td>
+                    <td>Pendente</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+</main>
+```
+
+</body>
+
+</html>
