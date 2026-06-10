@@ -27,10 +27,20 @@ formLogin.addEventListener(
                 senha
             );
 
-            alert("Login realizado com sucesso!");
+            const modalSucesso =
+            document.getElementById(
+                "modalSucesso"
+            );
 
-            window.location.href =
-                "agenda.html";
+            modalSucesso.style.display =
+                "flex";
+
+            setTimeout(() => {
+
+                window.location.href =
+                    "agenda.html";
+
+            }, 2000);
 
         } catch (error) {
 

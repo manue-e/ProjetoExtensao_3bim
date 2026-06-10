@@ -37,14 +37,34 @@ formCadastro.addEventListener(
                 senha
             );
 
-            alert("Conta criada com sucesso!");
+            const modalCadastro =
+            document.getElementById(
+                "modalCadastroSucesso"
+            );
 
-            window.location.href =
-                "login.html";
+            modalCadastro.style.display =
+                "flex";
+
+            setTimeout(() => {
+
+                window.location.href =
+                    "login.html";
+
+            }, 2000);
 
         }catch(error){
 
-            alert(error.message);
+            if(error.code === "auth/email-already-in-use"){
+
+                alert(
+                    "Já existe uma conta cadastrada com este e-mail."
+                );
+
+            }else{
+
+                alert(error.message);
+
+            }
 
         }
 
