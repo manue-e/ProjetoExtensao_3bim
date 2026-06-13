@@ -1,3 +1,17 @@
+
+import { db } from "../firebase/firebase.js";
+
+import {
+    collection,
+    addDoc,
+    getDocs,
+    updateDoc,
+    doc,
+    deleteDoc
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+
 const calendarGrid = document.getElementById("calendarGrid");
 const tituloMes = document.getElementById("tituloMes");
 
@@ -8,25 +22,7 @@ let dataAtual = new Date();
 let eventoSelecionado = null;
 let dataSelecionada = null;
 
-const eventos = {
-    "2026-06-04": [
-        {
-            titulo: "Suporte Técnico"
-        }
-    ],
-
-    "2026-06-10": [
-        {
-            titulo: "Consultoria TI"
-        }
-    ],
-
-    "2026-06-15": [
-        {
-            titulo: "Monitoramento"
-        }
-    ]
-};
+const eventos = {};
 
 const diasSemana = [
     "Dom",
@@ -119,6 +115,10 @@ function renderizarCalendario() {
                 document.createElement("div");
 
             eventDiv.classList.add("event");
+
+            if(evento.status === "concluido"){
+                eventDiv.classList.add("concluido");
+            }
 
             eventDiv.innerHTML = `
                 <strong>${evento.titulo}</strong>
@@ -415,7 +415,7 @@ document.getElementById("formAgendamento");
 
 formAgendamento.addEventListener(
     "submit",
-    (e) => {
+    async(e) => {
 
         e.preventDefault();
 
@@ -424,6 +424,18 @@ formAgendamento.addEventListener(
 
         const data =
             document.getElementById("dataAgendamento").value;
+            const novoDoc = await addDoc(
+                collection(db, "agendamentos"),
+                {
+                    titulo: servico,
+                    data: data,
+                    horario: horarioAgendamento.value,
+                    observacoes: observacoes.value,
+                    status: "pendente"
+                }
+            );
+
+            console.log("Agendamento salvo!");
 
         if(!eventos[data]){
 
@@ -432,9 +444,11 @@ formAgendamento.addEventListener(
         }
 
         eventos[data].push({
+            id: novoDoc.id,
             titulo: servico,
             horario: horarioAgendamento.value,
-            observacoes: observacoes.value
+            observacoes: observacoes.value,
+            status: "pendente"
         });
 
         modal.style.display = "none";
@@ -460,6 +474,33 @@ function abrirModalEdicao(
     const evento =
         eventos[data][indice];
 
+        const btnConcluir =
+        document.getElementById("btnConcluirAgendamento");
+
+    const btnCancelar =
+        document.getElementById("btnCancelarAgendamento");
+
+    if(evento.status === "concluido"){
+
+        btnConcluir.hidden = true;
+
+        btnCancelar.textContent =
+            "Desconcluir Atendimento";
+
+        btnCancelar.classList.remove("btn-cancelar");
+        btnCancelar.classList.add("btn-concluir");
+
+    }else{
+
+        btnConcluir.hidden = false;
+
+        btnCancelar.textContent =
+            "Cancelar Agendamento";
+
+        btnCancelar.classList.remove("btn-concluir");
+        btnCancelar.classList.add("btn-cancelar");
+
+    }
     document.getElementById(
         "editarServico"
     ).value =
@@ -480,6 +521,31 @@ function abrirModalEdicao(
 
 }
 
+document
+.getElementById("btnConcluirAgendamento")
+.addEventListener(
+    "click",
+    async () => {
+
+        const evento =
+            eventos[dataSelecionada][eventoSelecionado];
+
+        await updateDoc(
+            doc(db, "agendamentos", evento.id),
+            {
+                status: "concluido"
+            }
+        );
+
+        evento.status = "concluido";
+
+        modalEditar.style.display = "none";
+
+        renderizarCalendario();
+        atualizarProximosServicos();
+
+    }
+);
 
 
 document
@@ -524,25 +590,59 @@ document
 )
 .addEventListener(
     "click",
-    () => {
+    async () => {
 
-        const confirmar =
-            confirm(
-                "Deseja cancelar este agendamento?"
+        const evento =
+            eventos[dataSelecionada][eventoSelecionado];
+
+        if(evento.status === "concluido"){
+
+            const confirmar =
+                confirm(
+                    "Deseja desconcluir este atendimento?"
+                );
+
+            if(!confirmar) return;
+
+            evento.status = "pendente";
+
+            await updateDoc(
+                doc(db, "agendamentos", evento.id),
+                {
+                    status: "pendente"
+                }
             );
 
-        if(!confirmar) return;
+        }else{
 
-        eventos[dataSelecionada]
-        .splice(
-            eventoSelecionado,
-            1
-        );
+            const confirmar =
+                confirm(
+                    "Deseja cancelar este agendamento?"
+                );
+
+            if(!confirmar) return;
+
+            await deleteDoc(
+                doc(
+                    db,
+                    "agendamentos",
+                    evento.id
+                )
+            );
+
+            eventos[dataSelecionada]
+            .splice(
+                eventoSelecionado,
+                1
+            );
+
+        }
 
         modalEditar.style.display =
             "none";
 
         renderizarCalendario();
+        atualizarProximosServicos();
 
     }
 );
@@ -558,16 +658,29 @@ function atualizarProximosServicos(){
 
     const todosEventos = [];
 
+    const hoje = new Date();
+    hoje.setHours(0,0,0,0);
+
     for(const data in eventos){
 
-        eventos[data].forEach(evento => {
+        const dataEvento = new Date(data);
 
-            todosEventos.push({
-                data,
-                ...evento
+        if(dataEvento >= hoje){
+
+            eventos[data].forEach(evento => {
+
+                if(evento.status !== "concluido"){
+
+                    todosEventos.push({
+                        data,
+                        ...evento
+                    });
+
+                }
+
             });
 
-        });
+        }
 
     }
 
@@ -625,8 +738,7 @@ function formatarData(data){
 
 }
 
-renderizarCalendario();
-atualizarProximosServicos();
+carregarAgendamentos();
 
 
 
@@ -663,3 +775,34 @@ botoesFechar.forEach(botao => {
     );
 
 });
+async function carregarAgendamentos() {
+
+    const snapshot =
+        await getDocs(
+            collection(db, "agendamentos")
+        );
+
+    snapshot.forEach((doc) => {
+
+        const evento = doc.data();
+
+        if(!eventos[evento.data]){
+
+            eventos[evento.data] = [];
+
+        }
+
+        eventos[evento.data].push({
+            id: doc.id,
+            titulo: evento.titulo,
+            horario: evento.horario,
+            observacoes: evento.observacoes,
+            status: evento.status || "pendente"
+        });
+
+    });
+
+    renderizarCalendario();
+    atualizarProximosServicos();
+
+}
