@@ -7,11 +7,21 @@ import {
     getDocs,
     updateDoc,
     doc,
-    deleteDoc
+    deleteDoc,
+    query,
+    where
 }
 from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
+import {
+    getAuth,
+    onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
+
+const auth = getAuth();
+let usuarioLogado = null;
 const calendarGrid = document.getElementById("calendarGrid");
 const tituloMes = document.getElementById("tituloMes");
 
@@ -21,6 +31,10 @@ const btnProximoMes = document.getElementById("btnProximoMes");
 let dataAtual = new Date();
 let eventoSelecionado = null;
 let dataSelecionada = null;
+let isAdmin = false;
+
+
+
 
 const eventos = {};
 
@@ -424,15 +438,23 @@ formAgendamento.addEventListener(
 
         const data =
             document.getElementById("dataAgendamento").value;
+            if(!usuarioLogado){
+                alert("Usuário não autenticado.");
+                return;
+            }
             const novoDoc = await addDoc(
                 collection(db, "agendamentos"),
                 {
+                    
                     titulo: servico,
                     data: data,
                     horario: horarioAgendamento.value,
                     observacoes: observacoes.value,
-                    status: "pendente"
+                    status: "pendente",
+                    usuarioId: usuarioLogado.uid,
+                    emailCliente: usuarioLogado.email
                 }
+
             );
 
             console.log("Agendamento salvo!");
@@ -622,21 +644,15 @@ document
 
             if(!confirmar) return;
 
-            await deleteDoc(
-                doc(
-                    db,
-                    "agendamentos",
-                    evento.id
-                )
+            await updateDoc(
+                doc(db, "agendamentos", evento.id),
+                {
+                    status: "cancelado"
+                }
             );
 
-            eventos[dataSelecionada]
-            .splice(
-                eventoSelecionado,
-                1
-            );
-
-        }
+            evento.status = "cancelado";
+                    }
 
         modalEditar.style.display =
             "none";
@@ -738,9 +754,6 @@ function formatarData(data){
 
 }
 
-carregarAgendamentos();
-
-
 
 window.addEventListener(
     "click",
@@ -777,32 +790,92 @@ botoesFechar.forEach(botao => {
 });
 async function carregarAgendamentos() {
 
-    const snapshot =
-        await getDocs(
+    let snapshot;
+
+    if(isAdmin){
+
+        snapshot = await getDocs(
             collection(db, "agendamentos")
         );
+
+    }else{
+
+        const q = query(
+            collection(db, "agendamentos"),
+            where("usuarioId", "==", usuarioLogado.uid)
+        );
+
+        snapshot = await getDocs(q);
+
+    }
+
+    for(const data in eventos){
+        delete eventos[data];
+    }
 
     snapshot.forEach((doc) => {
 
         const evento = doc.data();
 
         if(!eventos[evento.data]){
-
             eventos[evento.data] = [];
-
         }
 
-        eventos[evento.data].push({
-            id: doc.id,
-            titulo: evento.titulo,
-            horario: evento.horario,
-            observacoes: evento.observacoes,
-            status: evento.status || "pendente"
-        });
+        if(evento.status !== "cancelado"){
+
+            eventos[evento.data].push({
+                id: doc.id,
+                titulo: evento.titulo,
+                horario: evento.horario,
+                observacoes: evento.observacoes,
+                status: evento.status || "pendente"
+            });
+
+        }
 
     });
 
     renderizarCalendario();
     atualizarProximosServicos();
+
+}
+
+onAuthStateChanged(auth, async (user) => {
+
+    if(!user){
+        window.location.href = "login.html";
+        return;
+    }
+
+    usuarioLogado = user;
+
+    if(user.email === "adm@daedalo.com"){
+        isAdmin = true;
+    }
+
+    configurarPermissoes();
+
+    await carregarAgendamentos();
+
+});
+
+function configurarPermissoes(){
+
+    const btnDashboard =
+        document.getElementById("btnDashboard");
+
+    if(isAdmin){
+
+        if(btnDashboard){
+            btnDashboard.style.display = "inline-block";
+        }
+
+    }else{
+
+        if(btnDashboard){
+            btnDashboard.style.display = "none";
+        }
+
+    }
 
 }
