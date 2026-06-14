@@ -5,17 +5,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Administrativo - TechAgenda</title>
+    <title>Daedalo | Dashboard</title>
 
-```
+
 <link rel="stylesheet" href="css/style.css">
-```
+
 
 </head>
 
 <body>
 
-```
+
 <header class="topbar">
 
     <div class="logo">
@@ -38,26 +38,25 @@
 
     <section class="dashboard-cards">
 
-        <div class="card-dashboard">
-            <h3>Clientes</h3>
-            <span>128</span>
+       <div class="card-dashboard">
+            <h3>Total de Agendamentos</h3>
+            <span id="totalAgendamentos">0</span>
         </div>
 
         <div class="card-dashboard">
-            <h3>Agendamentos</h3>
-            <span>342</span>
+            <h3>Pendentes</h3>
+            <span id="pendentes">0</span>
         </div>
 
         <div class="card-dashboard">
-            <h3>Este Mês</h3>
-            <span>48</span>
+            <h3>Concluídos</h3>
+            <span id="concluidos">0</span>
         </div>
 
         <div class="card-dashboard">
             <h3>Cancelados</h3>
-            <span>7</span>
+            <span id="cancelados">0</span>
         </div>
-
     </section>
 
     <section class="filtros-dashboard">
@@ -68,59 +67,54 @@
 
             <input
                 type="text"
-                placeholder="Digite o nome do cliente..."
+                id="filtroCliente"
+                placeholder="Digite o email do cliente..."
             >
 
-            <button class="btn-filtrar">
+            <button
+                class="btn-filtrar"
+                id="btnFiltrar"
+            >
                 Buscar
+            </button>
+
+            <button
+                class="btn-secondary"
+                id="btnLimparFiltro"
+            >
+                Limpar
             </button>
 
         </div>
 
     </section>
 
-    <section class="cliente-destaque">
+<section class="cliente-destaque">
 
-        <h2>🏆 Cliente Destaque</h2>
+    <h2>🏆 Cliente Destaque</h2>
 
-        <div class="cliente-card">
+    <div class="cliente-card">
 
-            <h3>João Silva</h3>
+        <h3 id="clienteDestaque">Nenhum</h3>
 
-            <p>
-                Total de Agendamentos:
-                <strong>17</strong>
-            </p>
+        <p>
+            Total de Agendamentos:
+            <strong id="totalClienteDestaque">0</strong>
+        </p>
 
-            <p>
-                Último Serviço:
-                <strong>Consultoria TI</strong>
-            </p>
+    </div>
 
-        </div>
-
-    </section>
+</section>
 
     <section class="servicos-populares">
 
-        <h2>Serviços Mais Procurados</h2>
+    <h2>Serviços Mais Procurados</h2>
 
-        <div class="servico-item">
-            <span>Suporte Técnico</span>
-            <strong>52%</strong>
-        </div>
+    <div id="servicosPopulares">
 
-        <div class="servico-item">
-            <span>Consultoria TI</span>
-            <strong>30%</strong>
-        </div>
+    </div>
 
-        <div class="servico-item">
-            <span>Monitoramento</span>
-            <strong>18%</strong>
-        </div>
-
-    </section>
+</section>
 
     <section class="ranking-clientes">
 
@@ -136,31 +130,7 @@
                 </tr>
             </thead>
 
-            <tbody>
-
-                <tr>
-                    <td>João Silva</td>
-                    <td>17</td>
-                    <td>Consultoria TI</td>
-                </tr>
-
-                <tr>
-                    <td>Maria Souza</td>
-                    <td>14</td>
-                    <td>Suporte Técnico</td>
-                </tr>
-
-                <tr>
-                    <td>Carlos Lima</td>
-                    <td>12</td>
-                    <td>Monitoramento</td>
-                </tr>
-
-                <tr>
-                    <td>Ana Santos</td>
-                    <td>10</td>
-                    <td>Consultoria TI</td>
-                </tr>
+            <tbody id="rankingClientesBody">
 
             </tbody>
 
@@ -183,29 +153,7 @@
                 </tr>
             </thead>
 
-            <tbody>
-
-                <tr>
-                    <td>João Silva</td>
-                    <td>Consultoria TI</td>
-                    <td>10/06/2026</td>
-                    <td>Confirmado</td>
-                </tr>
-
-                <tr>
-                    <td>Maria Souza</td>
-                    <td>Suporte Técnico</td>
-                    <td>10/06/2026</td>
-                    <td>Confirmado</td>
-                </tr>
-
-                <tr>
-                    <td>Carlos Lima</td>
-                    <td>Monitoramento</td>
-                    <td>11/06/2026</td>
-                    <td>Pendente</td>
-                </tr>
-
+            <tbody id="ultimosAgendamentosBody">          
             </tbody>
 
         </table>
@@ -213,8 +161,8 @@
     </section>
 
 </main>
-```
 
+    <script type="module" src="js/dashboard.js"></script>
 </body>
 
 </html>
