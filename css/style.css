@@ -411,7 +411,7 @@ footer{
     border:none;
     border-radius:50%;
     cursor:pointer;
-    background:#0d6efd;
+    background:#0F4168;
     color:white;
 }
 
@@ -927,7 +927,7 @@ DASHBOARD ADMINISTRATIVO
 }
 
 .event {
-    background: #2196f3;
+    background: #0F4168;
     color: white;
     padding: 5px;
     margin-top: 5px;
@@ -936,8 +936,8 @@ DASHBOARD ADMINISTRATIVO
 }
 
 .event.concluido {
-    background:#F4C76B;
-    color:#0F4168;
+    background:green;
+    color:white;
     font-weight:bold;
 }
 
@@ -1046,3 +1046,18 @@ nav a:hover{
 h1,h2,h3{
     color:#0F4168;
 }
+
+.btn-dashboard{
+    text-decoration:none;
+    background:#F4C76B;
+    color:#0F4168;
+    padding:12px 20px;
+    border-radius:8px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.btn-dashboard:hover{
+    background:#e7b95b;
+}
+
