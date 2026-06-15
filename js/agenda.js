@@ -864,16 +864,27 @@ function configurarPermissoes(){
     const btnDashboard =
         document.getElementById("btnDashboard");
 
+    const btnClientes =
+        document.getElementById("btnClientes");
+
     if(isAdmin){
 
         if(btnDashboard){
             btnDashboard.style.display = "inline-block";
         }
 
+        if(btnClientes){
+            btnClientes.style.display = "inline-block";
+        }
+
     }else{
 
         if(btnDashboard){
             btnDashboard.style.display = "none";
+        }
+
+        if(btnClientes){
+            btnClientes.style.display = "none";
         }
 
     }

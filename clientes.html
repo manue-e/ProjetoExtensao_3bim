@@ -7,27 +7,136 @@
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <style>
+        /* ==========================================
+           Correção de Centralização e Rolagem dos Modais
+           ========================================== */
+        .modal {
+            display: none; /* Controlado via JS (block/none) */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro levemente mais forte */
+        }
+
+        .modal-content {
+            /* Centralização perfeita na tela */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            
+            /* Responsividade */
+            width: 90%; 
+            max-width: 500px; /* Não deixa esticar demais em telas grandes */
+            
+            /* Controle de Altura e Rolagem */
+            max-height: 85vh; /* Ocupa no máximo 85% da altura da tela */
+            overflow-y: auto; /* Se o conteúdo passar de 85vh, cria rolagem apenas DENTRO do modal */
+            
+            /* Estética */
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ==========================================
+           Melhorias de Interface (IHC)
+           ========================================== */
+        .descricao-campo {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-bottom: 8px;
+            display: block;
+            text-align: left;
+        }
+        
+        .input-group label {
+            text-align: left;
+            display: block;
+            margin-bottom: 2px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .modal-content h2 {
+            text-align: center;
+            color: #0F4168;
+            margin-bottom: 25px;
+        }
+
+        /* Caixa de texto simulando input para a visualização */
+        .info-box {
+            padding: 12px 14px;
+            border: 1px solid #dcdcdc;
+            border-radius: 8px;
+            background: #f8f9fa;
+            color: #333;
+            text-align: left;
+            font-size: 16px;
+        }
+
+        /* Container de estatísticas do modal de visualização */
+        .estatisticas-container {
+            display: flex; 
+            justify-content: space-around; 
+            text-align: center; 
+            padding: 15px; 
+            background: #f8f9fa; 
+            border-radius: 8px; 
+            border: 1px solid #dcdcdc;
+        }
+
+        /* Melhoria no X de fechar o modal */
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .close:hover {
+            color: #dc3545;
+        }
+    </style>
 </head>
 <body>
 
     <header class="topbar">
-        <div class="logo">
-            <h2>DAEDALO</h2>
-        </div>
+        <a href="#inicio" class="logo">
+            <img src="img/logoDAEDALO.svg" alt="Logo Daedalo">
+        </a>
         <div class="topbar-actions">
-            <a href="agenda.html" class="btn-primary">Agenda</a>
-            <a href="login.html" class="btn-secondary">Sair</a>
+            <a href="agenda.html" class="btn-primary">
+                Agenda
+            </a>
+            <a href="dashboard.html" class="btn-primary">
+                Dashboard
+            </a>
+            <a href="login.html" class="btn-secondary">
+                Sair
+            </a>
         </div>
     </header>
 
-    <main class="agenda-container"> <aside class="sidebar">
+    <main class="agenda-container"> 
+        <aside class="sidebar">
             <h3>Ações</h3>
             <button id="btnNovoCliente" class="btn-primary" style="width: 100%; margin-bottom: 10px;">
                 + Novo Cliente
             </button>
-            <a href="relatorios.html" class="btn-secondary" style="display: block; text-align: center; width: 100%;">
+            <button id="btnGerarRelatorio" class="btn-primary" style="width: 100%; margin-bottom: 10px;">
                 Gerar Relatório
-            </a>
+            </button>
         </aside>
 
         <section class="agenda-content">
@@ -59,26 +168,37 @@
             <span class="close" id="fecharModalNovoCliente">&times;</span>
             <h2>Novo Cliente</h2>
             <form id="formNovoCliente" class="cadastro-form">
+                
                 <div class="input-group">
                     <label for="inputNomeCliente">Nome Completo</label>
-                    <input type="text" id="inputNomeCliente" placeholder="Digite o nome" required>
+                    <input type="text" id="inputNomeCliente" placeholder="Ex: João da Silva" required>
+                    <span class="descricao-campo">Insira o nome completo sem abreviações.</span>
                 </div>
+                
                 <div class="input-group">
                     <label for="inputEmailCliente">E-mail</label>
-                    <input type="email" id="inputEmailCliente" placeholder="Digite o e-mail" required>
+                    <input type="email" id="inputEmailCliente" placeholder="Ex: joao@email.com" required>
+                    <span class="descricao-campo">Informe um e-mail válido para envio de relatórios e contatos.</span>
                 </div>
+                
                 <div class="input-group">
                     <label for="inputTelefoneCliente">Telefone</label>
                     <input type="tel" id="inputTelefoneCliente" placeholder="(11) 99999-9999" required>
+                    <span class="descricao-campo">Digite o telefone com DDD (somente números).</span>
                 </div>
+                
                 <div class="input-group">
                     <label for="inputSenhaCliente">Senha</label>
                     <input type="password" id="inputSenhaCliente" placeholder="Digite a senha" required>
+                    <span class="descricao-campo">Crie uma senha de acesso para o cliente.</span>
                 </div>
+                
                 <div class="input-group">
                     <label for="inputConfirmarSenhaCliente">Confirmar Senha</label>
                     <input type="password" id="inputConfirmarSenhaCliente" placeholder="Repita a senha" required>
+                    <span class="descricao-campo">Repita a senha para confirmar e evitar erros.</span>
                 </div>
+                
                 <button type="submit" id="btnSalvarCliente" class="btn-salvar" style="width: 100%; margin-top: 15px;">
                     Salvar Cliente
                 </button>
@@ -90,15 +210,41 @@
         <div class="modal-content">
             <span class="close" id="fecharModalVisualizarCliente">&times;</span>
             <h2>Detalhes do Cliente</h2>
-            <div style="margin-top: 20px;">
-                <p><strong>Nome:</strong> <span id="visualizarNomeCliente"></span></p>
-                <p><strong>E-mail:</strong> <span id="visualizarEmailCliente"></span></p>
-                <p><strong>Telefone:</strong> <span id="visualizarTelefoneCliente"></span></p>
-                <hr style="margin: 15px 0;">
-                <h3>Estatísticas de Serviços</h3>
-                <p><strong>Agendamentos Abertos:</strong> <span id="visualizarAbertosCliente"></span></p>
-                <p><strong>Agendamentos Fechados:</strong> <span id="visualizarFechadosCliente"></span></p>
-                <p><strong>Total de Agendamentos:</strong> <span id="visualizarTotalCliente"></span></p>
+            
+            <div class="cadastro-form">
+                <div class="input-group">
+                    <label>Nome Completo</label>
+                    <div class="info-box" id="visualizarNomeCliente"></div>
+                </div>
+                
+                <div class="input-group">
+                    <label>E-mail</label>
+                    <div class="info-box" id="visualizarEmailCliente"></div>
+                </div>
+                
+                <div class="input-group">
+                    <label>Telefone</label>
+                    <div class="info-box" id="visualizarTelefoneCliente"></div>
+                </div>
+                
+                <hr style="margin: 25px 0 15px 0; border: none; border-top: 1px solid #dcdcdc;">
+                
+                <h3 style="text-align: center; color: #0F4168; margin-bottom: 20px; font-size: 1.1rem;">Estatísticas de Serviços</h3>
+                
+                <div class="estatisticas-container">
+                    <div>
+                        <strong style="color: #0d6efd; font-size: 1.6rem;" id="visualizarAbertosCliente">0</strong>
+                        <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">Abertos</p>
+                    </div>
+                    <div>
+                        <strong style="color: #198754; font-size: 1.6rem;" id="visualizarFechadosCliente">0</strong>
+                        <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">Concluídos</p>
+                    </div>
+                    <div>
+                        <strong style="color: #0F4168; font-size: 1.6rem;" id="visualizarTotalCliente">0</strong>
+                        <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">Total</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
