@@ -7,10 +7,9 @@ Projeto focado no desenvolvimento de uma solução web para otimização do temp
 
   <!-- Menu de navegação interna -->
   <a href="#sobre-o-projeto">Sobre o Projeto</a> •
-  <a href="#hospedagem">Hospedagem</a>
   <a href="#arquitetura-do-projeto">Arquitetura</a> •
-  <a href="#equipe-de-desenvolvimento">Equipe</a> •
-
+  <a href="#hospedagem">Hospedagem</a> •
+  <a href="#equipe-de-desenvolvimento">Equipe</a>
 </div>
 
 ---
@@ -36,21 +35,24 @@ O processo diário envolve deslocamentos frequentes entre clientes de diferentes
 
 ## Arquitetura do Projeto
 
+<!-- Adicione a estrutura das suas pastas aqui -->
+
 ---
 
 ## Hospedagem
 
 O projeto foi feito o deploy e a aplicação já está disponível online para uso e testes. Acesse através do link abaixo:
 
+<!-- Adicione o link do site aqui -->
+
 ---
 
 ## Equipe de Desenvolvimento
 
-Projeto desenvolvido para o curso TADs do IFSP
+Projeto desenvolvido para o curso TADs do IFSP.
 
 | Nome | Perfil GitHub |
+| :--- | :--- |
 | **Emanuelle Lima** | [@manue-e](https://github.com/manue-e) |
 | **Daniel Mello** | [@DanielMello07](https://github.com/DanielMello07) |
 | **Matheus** | [@matheuscostar77](https://github.com/matheuscostar77) |
-
-
