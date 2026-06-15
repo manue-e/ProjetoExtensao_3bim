@@ -1095,3 +1095,107 @@ h1,h2,h3{
     background:#e7b95b;
 }
 
+/* ==========================
+TABLETS
+========================== */
+
+@media (max-width: 992px){
+
+    .container{
+        padding: 0 20px;
+    }
+
+    .cards{
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .hero-content h2{
+        font-size: 2rem;
+    }
+
+}
+
+/* ==========================
+CELULARES
+========================== */
+
+@media (max-width: 768px){
+
+    header .container{
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    nav ul{
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .hero{
+        min-height: 70vh;
+    }
+
+    .hero-content{
+        padding: 20px;
+        text-align: center;
+    }
+
+    .hero-content h2{
+        font-size: 1.8rem;
+    }
+
+    .hero-content p{
+        font-size: 1rem;
+    }
+
+    .cards{
+        grid-template-columns: 1fr;
+    }
+
+    .card img{
+        height: 220px;
+        object-fit: cover;
+    }
+
+    .redes-sociais{
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn-social{
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+    }
+
+}
+
+/* ==========================
+CELULARES PEQUENOS
+========================== */
+
+@media (max-width: 480px){
+
+    .logo img{
+        max-width: 160px;
+    }
+
+    .hero-content h2{
+        font-size: 1.5rem;
+    }
+
+    .hero-content p{
+        font-size: 0.95rem;
+    }
+
+    .btn-principal{
+        width: 100%;
+        max-width: 280px;
+    }
+
+    section{
+        padding: 50px 20px;
+    }
+
+}
