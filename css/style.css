@@ -1199,3 +1199,46 @@ CELULARES PEQUENOS
     }
 
 }
+
+.menu-toggle{
+    display:none;
+}
+
+@media (max-width:768px){
+
+    .menu-toggle{
+        display:block;
+        background:none;
+        border:none;
+        color:white;
+        font-size:2rem;
+        cursor:pointer;
+        z-index:1001;
+    }
+
+    nav{
+        position:fixed;
+        top:0;
+        right:-100%;
+        width:250px;
+        height:100vh;
+        background:#0b3c68;
+        transition:.3s;
+        padding-top:80px;
+        z-index:1000;
+    }
+
+    nav.active{
+        right:0;
+    }
+
+    nav ul{
+        flex-direction:column;
+        align-items:center;
+        gap:20px;
+    }
+
+    nav ul li{
+        margin:0;
+    }
+}
