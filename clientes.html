@@ -1,168 +1,108 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daedalo | Dashboard</title>
+    <title>Daedalo | Clientes</title>
 
-
-<link rel="stylesheet" href="css/style.css">
-
-
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
-
 <body>
 
+    <header class="topbar">
+        <div class="logo">
+            <h2>DAEDALO</h2>
+        </div>
+        <div class="topbar-actions">
+            <a href="agenda.html" class="btn-primary">Agenda</a>
+            <a href="login.html" class="btn-secondary">Sair</a>
+        </div>
+    </header>
 
-<header class="topbar">
+    <main class="agenda-container"> <aside class="sidebar">
+            <h3>Ações</h3>
+            <button id="btnNovoCliente" class="btn-primary" style="width: 100%; margin-bottom: 10px;">
+                + Novo Cliente
+            </button>
+            <a href="relatorios.html" class="btn-secondary" style="display: block; text-align: center; width: 100%;">
+                Gerar Relatório
+            </a>
+        </aside>
 
-    <div class="logo">
-        <h2>TechAgenda - Dashboard</h2>
+        <section class="agenda-content">
+            <div class="agenda-header" style="justify-content: flex-start; margin-bottom: 20px;">
+                <h2 id="tituloListagem">Listagem de Clientes</h2>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table class="tabela-dashboard" style="width: 100%; text-align: left;">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>E-mail</th>
+                            <th>Total Agendamentos</th>
+                            <th>Agendamentos Abertos</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaClientesBody">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="modalNovoCliente" class="modal">
+        <div class="modal-content">
+            <span class="close" id="fecharModalNovoCliente">&times;</span>
+            <h2>Novo Cliente</h2>
+            <form id="formNovoCliente" class="cadastro-form">
+                <div class="input-group">
+                    <label for="inputNomeCliente">Nome Completo</label>
+                    <input type="text" id="inputNomeCliente" placeholder="Digite o nome" required>
+                </div>
+                <div class="input-group">
+                    <label for="inputEmailCliente">E-mail</label>
+                    <input type="email" id="inputEmailCliente" placeholder="Digite o e-mail" required>
+                </div>
+                <div class="input-group">
+                    <label for="inputTelefoneCliente">Telefone</label>
+                    <input type="tel" id="inputTelefoneCliente" placeholder="(11) 99999-9999" required>
+                </div>
+                <div class="input-group">
+                    <label for="inputSenhaCliente">Senha</label>
+                    <input type="password" id="inputSenhaCliente" placeholder="Digite a senha" required>
+                </div>
+                <div class="input-group">
+                    <label for="inputConfirmarSenhaCliente">Confirmar Senha</label>
+                    <input type="password" id="inputConfirmarSenhaCliente" placeholder="Repita a senha" required>
+                </div>
+                <button type="submit" id="btnSalvarCliente" class="btn-salvar" style="width: 100%; margin-top: 15px;">
+                    Salvar Cliente
+                </button>
+            </form>
+        </div>
     </div>
 
-    <div class="topbar-actions">
-        <a href="agenda.html" class="btn-primary">
-            Agenda
-        </a>
-
-        <a href="login.html" class="btn-secondary">
-            Sair
-        </a>
+    <div id="modalVisualizarCliente" class="modal">
+        <div class="modal-content">
+            <span class="close" id="fecharModalVisualizarCliente">&times;</span>
+            <h2>Detalhes do Cliente</h2>
+            <div style="margin-top: 20px;">
+                <p><strong>Nome:</strong> <span id="visualizarNomeCliente"></span></p>
+                <p><strong>E-mail:</strong> <span id="visualizarEmailCliente"></span></p>
+                <p><strong>Telefone:</strong> <span id="visualizarTelefoneCliente"></span></p>
+                <hr style="margin: 15px 0;">
+                <h3>Estatísticas de Serviços</h3>
+                <p><strong>Agendamentos Abertos:</strong> <span id="visualizarAbertosCliente"></span></p>
+                <p><strong>Agendamentos Fechados:</strong> <span id="visualizarFechadosCliente"></span></p>
+                <p><strong>Total de Agendamentos:</strong> <span id="visualizarTotalCliente"></span></p>
+            </div>
+        </div>
     </div>
-
-</header>
-
-<main class="dashboard-container">
-
-    <section class="dashboard-cards">
-
-       <div class="card-dashboard">
-            <h3>Total de Agendamentos</h3>
-            <span id="totalAgendamentos">0</span>
-        </div>
-
-        <div class="card-dashboard">
-            <h3>Pendentes</h3>
-            <span id="pendentes">0</span>
-        </div>
-
-        <div class="card-dashboard">
-            <h3>Concluídos</h3>
-            <span id="concluidos">0</span>
-        </div>
-
-        <div class="card-dashboard">
-            <h3>Cancelados</h3>
-            <span id="cancelados">0</span>
-        </div>
-    </section>
-
-    <section class="filtros-dashboard">
-
-        <h2>Pesquisar Cliente</h2>
-
-        <div class="filtro-container">
-
-            <input
-                type="text"
-                id="filtroCliente"
-                placeholder="Digite o email do cliente..."
-            >
-
-            <button
-                class="btn-filtrar"
-                id="btnFiltrar"
-            >
-                Buscar
-            </button>
-
-            <button
-                class="btn-secondary"
-                id="btnLimparFiltro"
-            >
-                Limpar
-            </button>
-
-        </div>
-
-    </section>
-
-    <section class="cliente-destaque">
-
-        <h2>🏆 Cliente Destaque</h2>
-
-        <div class="cliente-card">
-
-            <h3 id="clienteDestaque">Nenhum</h3>
-
-            <p>
-                Total de Agendamentos:
-                <strong id="totalClienteDestaque">0</strong>
-            </p>
-
-        </div>
-
-    </section>
-
-        <section class="servicos-populares">
-
-        <h2>Serviços Mais Procurados</h2>
-
-        <div id="servicosPopulares">
-
-        </div>
-
-    </section>
-
-    <section class="ranking-clientes">
-
-        <h2>Ranking de Clientes</h2>
-
-        <table class="tabela-dashboard">
-
-            <thead>
-                <tr>
-                    <th>Cliente</th>
-                    <th>Agendamentos</th>
-                    <th>Último Serviço</th>
-                </tr>
-            </thead>
-
-            <tbody id="rankingClientesBody">
-
-            </tbody>
-
-        </table>
-
-    </section>
-
-    <section class="ultimos-agendamentos">
-
-        <h2>Últimos Agendamentos</h2>
-
-        <table class="tabela-dashboard">
-
-            <thead>
-                <tr>
-                    <th>Cliente</th>
-                    <th>Serviço</th>
-                    <th>Data</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-
-            <tbody id="ultimosAgendamentosBody">          
-            </tbody>
-
-        </table>
-
-    </section>
-
-</main>
 
     <script type="module" src="js/clientes.js"></script>
 </body>
-
 </html>
