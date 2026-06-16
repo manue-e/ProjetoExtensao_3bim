@@ -32,3 +32,10 @@ INSERT INTO servicos (nome, descricao, preco, duracao_minutos) VALUES
 ('Consultoria TI', 'Orientação estratégica para otimizar processos e implementar soluções tecnológicas eficazes.', 45.00, 30),
 ('Monitoramento de Infraestrutura', 'Monitoramento de rede para que os problemas sejam solucionados antes de impactarem sua produtividade.',  110.00, 60);
 
+INSERT INTO agendamentos (usuario_id, servico_id, status_id, data_hora) VALUES
+(2, 1, 3, '2026-06-01 10:00:00'), 
+(3, 1, 3, '2026-06-02 14:00:00'), 
+(4, 2, 2, '2026-06-03 09:00:00'), 
+(5, 2, 3, '2026-06-04 13:00:00'),
+(6, 3, 1, '2026-06-05 16:00:00'), 
+(7, 3, 1, '2026-06-06 09:00:00')
