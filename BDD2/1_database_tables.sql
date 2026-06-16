@@ -21,7 +21,7 @@ CREATE TABLE usuarios (
 CREATE TABLE servicos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
-    descricao VARCHAR(100) NOT NULL,
+    descricao VARCHAR(250) NOT NULL,
     preco DECIMAL(10, 2) NOT NULL DEFAULT 0.00 CHECK (preco >= 0),
     duracao_minutos INT NOT NULL DEFAULT 60,
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
