@@ -368,12 +368,22 @@ footer{
     font-weight:bold;
 }
 
+.btn-primary:hover{
+    background:#d8ac53;
+    transition:.3s;
+}
+
 .btn-secondary{
     text-decoration:none;
     color:white;
     border:1px solid white;
     padding:12px 20px;
     border-radius:8px;
+}
+.btn-secondary:hover{
+    background:white;
+    color:#0F4168;
+    transition:.3s;
 }
 
 .agenda-container{
@@ -788,6 +798,156 @@ DASHBOARD ADMINISTRATIVO
     font-size:12px;
 }
 
+}
+
+/* =========================
+DASHBOARD ADMINISTRATIVO
+========================= */
+
+/* ==========================================
+Correção de Centralização e Rolagem dos Modais
+========================================== */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); 
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%; 
+    max-width: 500px; 
+    max-height: 85vh; 
+    overflow-y: auto; 
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal Relatório precisa ser mais largo para os gráficos */
+#modalRelatorio .modal-content {
+    max-width: 800px;
+}
+
+/* ==========================================
+    Melhorias de Interface (IHC)
+    ========================================== */
+.descricao-campo {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 8px;
+    display: block;
+    text-align: left;
+    margin-top: 5px;
+}
+
+.input-group label {
+    text-align: left;
+    display: block;
+    margin-bottom: 2px;
+    color: #333;
+    font-weight: bold;
+}
+
+.modal-content h2 {
+    text-align: center;
+    color: #0F4168;
+    margin-bottom: 25px;
+}
+
+.info-box {
+    padding: 12px 14px;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    background: #f8f9fa;
+    color: #333;
+    text-align: left;
+    font-size: 16px;
+}
+
+.estatisticas-container {
+    display: flex; 
+    justify-content: space-around; 
+    text-align: center; 
+    padding: 15px; 
+    background: #f8f9fa; 
+    border-radius: 8px; 
+    border: 1px solid #dcdcdc;
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.close:hover {
+    color: #dc3545;
+}
+
+/* ==========================================
+    Estilos das Tags de Seleção e Relatório
+    ========================================== */
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.cliente-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border: 1px solid #0F4168;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    background-color: #f8f9fa;
+    color: #0F4168;
+    font-weight: bold;
+}
+
+.cliente-tag .remover-tag {
+    margin-left: 8px;
+    color: #dc3545;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.cliente-tag .remover-tag:hover {
+    color: #a71d2a;
+}
+
+/* Área do relatório (que será impressa) */
+.conteudo-relatorio-preview {
+    padding: 30px;
+    background: white;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    margin-top: 20px;
+    color: #333;
+}
+
+.grafico-container {
+    margin-bottom: 30px;
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
 }
 
 /* ===================

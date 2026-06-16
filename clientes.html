@@ -3,111 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daedalo | Clientes</title>
+    <link rel="icon" href="img/iconeNavegador.png" type="image/png">
+    <title>Clientes</title>
 
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
-    <style>
-        /* ==========================================
-           Correção de Centralização e Rolagem dos Modais
-           ========================================== */
-        .modal {
-            display: none; /* Controlado via JS (block/none) */
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro levemente mais forte */
-        }
-
-        .modal-content {
-            /* Centralização perfeita na tela */
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            
-            /* Responsividade */
-            width: 90%; 
-            max-width: 500px; /* Não deixa esticar demais em telas grandes */
-            
-            /* Controle de Altura e Rolagem */
-            max-height: 85vh; /* Ocupa no máximo 85% da altura da tela */
-            overflow-y: auto; /* Se o conteúdo passar de 85vh, cria rolagem apenas DENTRO do modal */
-            
-            /* Estética */
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        /* ==========================================
-           Melhorias de Interface (IHC)
-           ========================================== */
-        .descricao-campo {
-            font-size: 0.85rem;
-            color: #6c757d;
-            margin-bottom: 8px;
-            display: block;
-            text-align: left;
-        }
-        
-        .input-group label {
-            text-align: left;
-            display: block;
-            margin-bottom: 2px;
-            color: #333;
-            font-weight: bold;
-        }
-
-        .modal-content h2 {
-            text-align: center;
-            color: #0F4168;
-            margin-bottom: 25px;
-        }
-
-        /* Caixa de texto simulando input para a visualização */
-        .info-box {
-            padding: 12px 14px;
-            border: 1px solid #dcdcdc;
-            border-radius: 8px;
-            background: #f8f9fa;
-            color: #333;
-            text-align: left;
-            font-size: 16px;
-        }
-
-        /* Container de estatísticas do modal de visualização */
-        .estatisticas-container {
-            display: flex; 
-            justify-content: space-around; 
-            text-align: center; 
-            padding: 15px; 
-            background: #f8f9fa; 
-            border-radius: 8px; 
-            border: 1px solid #dcdcdc;
-        }
-
-        /* Melhoria no X de fechar o modal */
-        .close {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #aaa;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .close:hover {
-            color: #dc3545;
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
@@ -116,15 +19,9 @@
             <img src="img/logoDAEDALO.svg" alt="Logo Daedalo">
         </a>
         <div class="topbar-actions">
-            <a href="agenda.html" class="btn-primary">
-                Agenda
-            </a>
-            <a href="dashboard.html" class="btn-primary">
-                Dashboard
-            </a>
-            <a href="login.html" class="btn-secondary">
-                Sair
-            </a>
+            <a href="agenda.html" class="btn-primary">Agenda</a>
+            <a href="dashboard.html" class="btn-primary">Dashboard</a>
+            <a href="login.html" class="btn-secondary">Sair</a>
         </div>
     </header>
 
@@ -135,7 +32,7 @@
                 + Novo Cliente
             </button>
             <button id="btnGerarRelatorio" class="btn-primary" style="width: 100%; margin-bottom: 10px;">
-                Gerar Relatório
+                <i class="bi bi-file-earmark-bar-graph"></i> Gerar Relatório
             </button>
         </aside>
 
@@ -170,21 +67,9 @@
             <form id="formNovoCliente" class="cadastro-form">
                 
                 <div class="input-group">
-                    <label for="inputNomeCliente">Nome Completo</label>
-                    <input type="text" id="inputNomeCliente" placeholder="Ex: João da Silva" required>
-                    <span class="descricao-campo">Insira o nome completo sem abreviações.</span>
-                </div>
-                
-                <div class="input-group">
                     <label for="inputEmailCliente">E-mail</label>
                     <input type="email" id="inputEmailCliente" placeholder="Ex: joao@email.com" required>
                     <span class="descricao-campo">Informe um e-mail válido para envio de relatórios e contatos.</span>
-                </div>
-                
-                <div class="input-group">
-                    <label for="inputTelefoneCliente">Telefone</label>
-                    <input type="tel" id="inputTelefoneCliente" placeholder="(11) 99999-9999" required>
-                    <span class="descricao-campo">Digite o telefone com DDD (somente números).</span>
                 </div>
                 
                 <div class="input-group">
@@ -213,7 +98,7 @@
             
             <div class="cadastro-form">
                 <div class="input-group">
-                    <label>Nome Completo</label>
+                    <label>Nome / Identificação</label>
                     <div class="info-box" id="visualizarNomeCliente"></div>
                 </div>
                 
@@ -246,6 +131,76 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="modalRelatorio" class="modal">
+        <div class="modal-content">
+            <span class="close" id="fecharModalRelatorio">&times;</span>
+            <h2>Gerar Relatório de Atendimentos</h2>
+            
+            <div class="cadastro-form">
+                <div class="input-group">
+                    <label for="selectClientesRelatorio">Selecionar Clientes</label>
+                    <span class="descricao-campo">Escolha um ou mais clientes para compor o relatório.</span>
+                    <select id="selectClientesRelatorio" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                        <option value="">Selecione...</option>
+                        </select>
+                    
+                    <div id="containerTagsClientes" class="tags-container">
+                        </div>
+                </div>
+
+                <div style="display: flex; gap: 15px; margin-top: 20px;">
+                    <div class="input-group" style="flex: 1;">
+                        <label for="inputDataDe">De:</label>
+                        <input type="date" id="inputDataDe">
+                    </div>
+                    <div class="input-group" style="flex: 1;">
+                        <label for="inputDataPara">Para:</label>
+                        <input type="date" id="inputDataPara">
+                    </div>
+                </div>
+
+                <button type="button" id="btnGerarPrevia" class="btn-primary" style="width: 100%; margin-top: 15px;">
+                    Visualizar Prévia
+                </button>
+            </div>
+
+            <div id="areaPreviaRelatorio" style="display: none; margin-top: 30px;">
+                <hr style="margin-bottom: 20px;">
+                
+                <div id="documentoPDF" class="conteudo-relatorio-preview">
+                    
+                    <div style="text-align: center; margin-bottom: 40px;">
+                        <img src="img/logoDAEDALO.svg" alt="Daedalo Logo" style="height: 60px; margin-bottom: 10px;">
+                        <h2 style="color: #0F4168; margin-bottom: 5px;">Relatório de Atendimentos</h2>
+                        <p id="textoPeriodoRelatorio" style="color: #666; font-size: 0.9rem;"></p>
+                    </div>
+
+                    <div id="containerGraficosGerais" style="display: none;">
+                        <h3 style="border-bottom: 2px solid #0F4168; padding-bottom: 5px; margin-bottom: 20px;">Visão Geral Comparativa</h3>
+                        
+                        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                            <div class="grafico-container" style="flex: 1; min-width: 250px;">
+                                <canvas id="graficoStatusGeral"></canvas>
+                            </div>
+                            <div class="grafico-container" style="flex: 1; min-width: 250px;">
+                                <canvas id="graficoServicosGeral"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="containerGraficosIndividuais">
+                        </div>
+
+                </div>
+
+                <button type="button" id="btnBaixarPDF" class="btn-salvar" style="width: 100%; margin-top: 20px; background-color: #dc3545;">
+                    <i class="bi bi-file-earmark-pdf-fill"></i> Baixar Arquivo PDF
+                </button>
+            </div>
+
         </div>
     </div>
 
