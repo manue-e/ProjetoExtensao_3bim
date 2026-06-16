@@ -27,3 +27,8 @@ INSERT INTO usuarios (perfil_id, nome_completo, email, senha, telefone) VALUES
 (1, 'Felipe Barros', 'felipe@gmail.com', '123456789', '19811111111'),
 (1, 'Larissa Dias', 'larissa@gmail.com', '123456789', '19800000000');
 
+INSERT INTO servicos (nome, descricao, preco, duracao_minutos) VALUES 
+('Suporte Técnico', 'Mantemos computadores e sistemas funcionando corretamente, solucionando problemas de software e hardware.', 60.00, 30),
+('Consultoria TI', 'Orientação estratégica para otimizar processos e implementar soluções tecnológicas eficazes.', 45.00, 30),
+('Monitoramento de Infraestrutura', 'Monitoramento de rede para que os problemas sejam solucionados antes de impactarem sua produtividade.',  110.00, 60);
+
