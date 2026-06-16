@@ -5,7 +5,7 @@ INSERT INTO status_agendamento (nome) VALUES
 ('Pendente'), ('Confirmado'), ('Concluído'), ('Cancelado');
 
 -- Inserindo Usuários (20 linhas)
-INSERT INTO usuarios (perfil_id, nome, email, senha, telefone) VALUES
+INSERT INTO usuarios (perfil_id, nome_completo, email, senha, telefone) VALUES
 (2, 'Admin', 'adm@daedalo.com', '123456', '19999999999'),
 (1, 'João Cabeleireiro', 'joao@gmail.com', '123456789', '19988888888'),
 (1, 'Carlos Souza', 'carlos@gmail.com', '123456789', '19977777777'),
