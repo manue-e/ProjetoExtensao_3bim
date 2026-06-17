@@ -41,7 +41,6 @@
             box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
         }
 
-        /* Modal Relatório precisa ser mais largo para os gráficos */
         #modalRelatorio .modal-content {
             max-width: 800px;
         }
@@ -139,7 +138,6 @@
             color: #a71d2a;
         }
 
-        /* Área do relatório (que será impressa) */
         .conteudo-relatorio-preview {
             padding: 30px;
             background: white;
@@ -157,18 +155,17 @@
             border-radius: 8px;
         }
     </style>
-
 </head>
 <body>
 
     <header class="topbar">
-        <a href="../index.html#inicio" class="logo">
+        <a href="#inicio" class="logo">
             <img src="../img/logoDAEDALO.svg" alt="Logo Daedalo">
         </a>
         <div class="topbar-actions">
             <a href="agenda.html" class="btn-primary">Agenda</a>
             <a href="dashboard.html" class="btn-primary">Dashboard</a>
-            <a href="../index.html#inicio" class="btn-secondary">Sair</a>
+            <a href="login.html" class="btn-secondary">Sair</a>
         </div>
     </header>
 
@@ -178,7 +175,7 @@
             <button id="btnNovoCliente" class="btn-primary" style="width: 100%; margin-bottom: 10px;">
                 + Novo Cliente
             </button>
-            <button id="btnGerarRelatorio" class="btn-primary" style="width: 100%; margin-bottom: 10px;">
+            <button id="btnGerarRelatorio" class="btn-primary" style="width: 100%; margin-bottom: 10px; background-color: #198754;">
                 <i class="bi bi-file-earmark-bar-graph"></i> Gerar Relatório
             </button>
         </aside>
@@ -214,21 +211,33 @@
             <form id="formNovoCliente" class="cadastro-form">
                 
                 <div class="input-group">
+                    <label for="inputNomeCliente">Nome Completo</label>
+                    <span class="descricao-campo">Insira o nome completo sem abreviações.</span>
+                    <input type="text" id="inputNomeCliente" placeholder="Ex: João da Silva" required>
+                </div>
+
+                <div class="input-group">
                     <label for="inputEmailCliente">E-mail</label>
-                    <input type="email" id="inputEmailCliente" placeholder="Ex: joao@email.com" required>
                     <span class="descricao-campo">Informe um e-mail válido para envio de relatórios e contatos.</span>
+                    <input type="email" id="inputEmailCliente" placeholder="Ex: joao@email.com" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="inputTelefoneCliente">Telefone</label>
+                    <span class="descricao-campo">Digite o telefone com DDD (somente números).</span>
+                    <input type="tel" id="inputTelefoneCliente" placeholder="(11) 99999-9999" required>
                 </div>
                 
                 <div class="input-group">
                     <label for="inputSenhaCliente">Senha</label>
-                    <input type="password" id="inputSenhaCliente" placeholder="Digite a senha" required>
                     <span class="descricao-campo">Crie uma senha de acesso para o cliente.</span>
+                    <input type="password" id="inputSenhaCliente" placeholder="Digite a senha" required>
                 </div>
                 
                 <div class="input-group">
                     <label for="inputConfirmarSenhaCliente">Confirmar Senha</label>
-                    <input type="password" id="inputConfirmarSenhaCliente" placeholder="Repita a senha" required>
                     <span class="descricao-campo">Repita a senha para confirmar e evitar erros.</span>
+                    <input type="password" id="inputConfirmarSenhaCliente" placeholder="Repita a senha" required>
                 </div>
                 
                 <button type="submit" id="btnSalvarCliente" class="btn-salvar" style="width: 100%; margin-top: 15px;">
@@ -320,7 +329,7 @@
                 <div id="documentoPDF" class="conteudo-relatorio-preview">
                     
                     <div style="text-align: center; margin-bottom: 40px;">
-                        <img src="../img/iconeRelatorioDAEDALO.png" alt="Daedalo Logo" style="height: 60px; margin-bottom: 10px;">
+                        <img src="../img/logoDAEDALO.svg" alt="Daedalo Logo" style="height: 60px; margin-bottom: 10px;">
                         <h2 style="color: #0F4168; margin-bottom: 5px;">Relatório de Atendimentos</h2>
                         <p id="textoPeriodoRelatorio" style="color: #666; font-size: 0.9rem;"></p>
                     </div>

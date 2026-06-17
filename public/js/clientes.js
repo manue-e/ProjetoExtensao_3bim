@@ -6,7 +6,8 @@ import {
     deleteDoc,
     doc,
     query,
-    where
+    where,
+    setDoc // <-- Importado o setDoc para salvar o perfil do usuario
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 import {
@@ -88,25 +89,44 @@ let instanciasGraficos = [];
 // ==========================================
 
 async function carregarListaClientes() {
-    tabelaClientesBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Carregando clientes baseados nos agendamentos...</td></tr>';
+    tabelaClientesBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Carregando clientes...</td></tr>';
     
     try {
-        const snapshot = await getDocs(collection(db, "agendamentos"));
-        agendamentosGlobais = [];
         const mapClientes = {};
 
-        snapshot.forEach((documento) => {
+        // 1. Busca primeiro todos os usuários cadastrados na coleção 'usuarios'
+        const usuariosSnapshot = await getDocs(collection(db, "usuarios"));
+        usuariosSnapshot.forEach((documento) => {
+            const dados = documento.data();
+            mapClientes[dados.email] = {
+                id: dados.email,
+                nome: dados.nome || dados.email.split('@')[0], 
+                email: dados.email,
+                telefone: dados.telefone || "Não registrado",
+                totalAgendamentos: 0,
+                agendamentosAbertos: 0,
+                agendamentosFechados: 0,
+                agendamentosCancelados: 0
+            };
+        });
+
+        // 2. Busca os agendamentos para fazer o balanço de atendimentos
+        const agendamentosSnapshot = await getDocs(collection(db, "agendamentos"));
+        agendamentosGlobais = [];
+
+        agendamentosSnapshot.forEach((documento) => {
             const dados = documento.data();
             agendamentosGlobais.push(dados); 
-
             const email = dados.emailCliente;
 
             if (email) {
+                // Se for um usuário legado que só tem agendamento e não tem cadastro completo
                 if (!mapClientes[email]) {
                     mapClientes[email] = {
                         id: email,
                         nome: email.split('@')[0], 
                         email: email,
+                        telefone: "Não registrado",
                         totalAgendamentos: 0,
                         agendamentosAbertos: 0,
                         agendamentosFechados: 0,
@@ -193,7 +213,8 @@ function abrirModalVisualizarCliente(idCliente) {
     if (cliente) {
         visualizarNomeCliente.textContent = cliente.nome;
         visualizarEmailCliente.textContent = cliente.email;
-        visualizarTelefoneCliente.textContent = "Não registrado (Auth)"; 
+        // Substituído o "Não registrado (Auth)" pelo telefone da coleção
+        visualizarTelefoneCliente.textContent = cliente.telefone; 
         visualizarTotalCliente.textContent = cliente.totalAgendamentos || 0;
         visualizarAbertosCliente.textContent = cliente.agendamentosAbertos || 0;
         visualizarFechadosCliente.textContent = cliente.agendamentosFechados || 0;
@@ -229,6 +250,8 @@ async function excluirCadastroCliente(emailCliente) {
 async function salvarDadosNovoCliente(event) {
     event.preventDefault();
 
+    const nome = document.getElementById("inputNomeCliente").value;
+    const telefone = document.getElementById("inputTelefoneCliente").value;
     const email = document.getElementById("inputEmailCliente").value;
     const senha = document.getElementById("inputSenhaCliente").value;
     const confirmaSenha = document.getElementById("inputConfirmarSenhaCliente").value;
@@ -239,9 +262,22 @@ async function salvarDadosNovoCliente(event) {
     }
 
     try {
-        await createUserWithEmailAndPassword(auth, email, senha);
-        alert("Cliente cadastrado no Authentication com sucesso!");
+        // 1. Cria a conta no Firebase Authentication
+        const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
+        const user = userCredential.user;
+
+        // 2. Salva nome e telefone no Firestore na coleção de usuarios
+        await setDoc(doc(db, "usuarios", user.uid), {
+            nome: nome,
+            email: email,
+            telefone: telefone,
+            dataCadastro: new Date().toISOString()
+        });
+
+        alert("Cliente cadastrado com sucesso!");
         fecharModais();
+        
+        // A página deve ser recarregada naturalmente para relogar o administrador ou pelo listener do Auth
     } catch (error) {
         if (error.code === "auth/email-already-in-use") {
             alert("Já existe uma conta cadastrada com este e-mail no banco.");
@@ -332,12 +368,10 @@ function gerarPreviaRelatorio() {
     
     areaPreviaRelatorio.style.display = "block";
 
-    // Se mais de um, gera a sessão global
     if (clientesSelecionadosParaRelatorio.length > 1) {
         gerarGraficosGeraisMulticlientes(agendamentosFiltrados);
     }
 
-    // Gera a sessão específica de cada um
     clientesSelecionadosParaRelatorio.forEach((emailCliente) => {
         gerarSecaoEspecificaCliente(emailCliente, agendamentosFiltrados);
     });
@@ -346,7 +380,6 @@ function gerarPreviaRelatorio() {
 function gerarGraficosGeraisMulticlientes(agendamentos) {
     containerGraficosGerais.style.display = "block";
 
-    // 1. Lógica para Gráfico de Status (Linha Horizontal Empilhada)
     let totalAbertos = 0;
     let totalFechados = 0;
     let totalCancelados = 0;
@@ -361,7 +394,6 @@ function gerarGraficosGeraisMulticlientes(agendamentos) {
         });
     });
 
-    // Ajuste da altura do container para o gráfico horizontal ficar bonito
     document.getElementById("graficoStatusGeral").parentElement.style.height = "150px";
     
     const ctxStatus = document.getElementById("graficoStatusGeral").getContext("2d");
@@ -373,22 +405,22 @@ function gerarGraficosGeraisMulticlientes(agendamentos) {
                 {
                     label: 'Concluídos',
                     data: [totalFechados],
-                    backgroundColor: '#198754' // Verde
+                    backgroundColor: '#198754'
                 },
                 {
                     label: 'Em Aberto',
                     data: [totalAbertos],
-                    backgroundColor: '#6c757d' // Cinza
+                    backgroundColor: '#6c757d'
                 },
                 {
                     label: 'Cancelados',
                     data: [totalCancelados],
-                    backgroundColor: '#dc3545' // Vermelho
+                    backgroundColor: '#dc3545'
                 }
             ]
         },
         options: {
-            indexAxis: 'y', // Transforma em linha horizontal
+            indexAxis: 'y', 
             responsive: true,
             maintainAspectRatio: false,
             scales: {
@@ -402,7 +434,6 @@ function gerarGraficosGeraisMulticlientes(agendamentos) {
         }
     });
 
-    // 2. Lógica para Gráfico Geral de Serviços Mais Utilizados
     const frequenciaServicosGeral = {};
     
     agendamentos.forEach(ag => {
@@ -426,7 +457,7 @@ function gerarGraficosGeraisMulticlientes(agendamentos) {
             datasets: [{
                 label: 'Total de Solicitações',
                 data: dadosServicosGerais.length > 0 ? dadosServicosGerais : [0],
-                backgroundColor: '#0F4168' // Azul Daedalo padrão
+                backgroundColor: '#0F4168' 
             }]
         },
         options: {
@@ -471,14 +502,12 @@ function gerarSecaoEspecificaCliente(email, agendamentos) {
     const idCanvasStatus = `canvasStatus_${email.replace(/[^a-zA-Z0-9]/g, '')}`;
     const idCanvasServicos = `canvasServicos_${email.replace(/[^a-zA-Z0-9]/g, '')}`;
 
-    // Cria a DIV que engloba o cliente inteiro. A classe 'html2pdf__page-break' garante 1 cliente por página no PDF.
     const secaoHTML = document.createElement("div");
     secaoHTML.className = "html2pdf__page-break"; 
     secaoHTML.style.marginTop = "40px";
     secaoHTML.style.borderTop = "1px solid #ccc";
     secaoHTML.style.paddingTop = "20px";
 
-    // O flexbox 'justify-content: space-around' garante o alinhamento perfeito pedido
     secaoHTML.innerHTML = `
         <h3 style="color: #0F4168; text-transform: capitalize;">${nomeExibicao}</h3>
         <p style="font-size: 0.9rem; color: #666;">
@@ -513,7 +542,6 @@ function gerarSecaoEspecificaCliente(email, agendamentos) {
 
     containerGraficosIndividuais.appendChild(secaoHTML);
 
-    // Gráfico de Pizza de Status (Agora com as 3 cores padronizadas)
     const ctxStatus = document.getElementById(idCanvasStatus).getContext("2d");
     const graficoStatus = new Chart(ctxStatus, {
         type: 'pie',
@@ -521,7 +549,7 @@ function gerarSecaoEspecificaCliente(email, agendamentos) {
             labels: ['Concluídos', 'Em Aberto', 'Cancelados'],
             datasets: [{
                 data: [concluidos, abertos, cancelados],
-                backgroundColor: ['#198754', '#6c757d', '#dc3545'] // Verde, Cinza, Vermelho
+                backgroundColor: ['#198754', '#6c757d', '#dc3545']
             }]
         },
         options: {
@@ -530,7 +558,6 @@ function gerarSecaoEspecificaCliente(email, agendamentos) {
         }
     });
 
-    // Gráfico de Barras dos Serviços (Cor Padrão)
     const ctxServicos = document.getElementById(idCanvasServicos).getContext("2d");
     const graficoServicos = new Chart(ctxServicos, {
         type: 'bar',
@@ -539,7 +566,7 @@ function gerarSecaoEspecificaCliente(email, agendamentos) {
             datasets: [{
                 label: 'Quantidade de Pedidos',
                 data: topServicosDados.length > 0 ? topServicosDados : [0],
-                backgroundColor: '#0F4168' // Azul Padrão para todos
+                backgroundColor: '#0F4168' 
             }]
         },
         options: {
