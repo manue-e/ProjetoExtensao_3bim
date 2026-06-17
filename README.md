@@ -56,8 +56,7 @@ O processo diário envolve deslocamentos frequentes entre clientes de diferentes
 
 O projeto foi feito o deploy e a aplicação já está disponível online para uso e testes. Acesse através do link abaixo:
 
-<!-- Adicione o link do site aqui -->
-
+(https://daedalo-bd.firebaseapp.com)
 
 <h2 id="equipe">Equipe de Desenvolvimento</h2>
 
