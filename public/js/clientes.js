@@ -82,7 +82,6 @@ let listaDeClientes = [];
 let agendamentosGlobais = [];
 let clientesSelecionadosParaRelatorio = [];
 let instanciasGraficos = []; 
-const paletaDeCores = ['#0F4168', '#F4C76B', '#198754', '#dc3545', '#0dcaf0', '#6610f2', '#fd7e14', '#e83e8c'];
 
 // ==========================================
 // Funções Gerais (Tabela e DB)
@@ -110,7 +109,8 @@ async function carregarListaClientes() {
                         email: email,
                         totalAgendamentos: 0,
                         agendamentosAbertos: 0,
-                        agendamentosFechados: 0
+                        agendamentosFechados: 0,
+                        agendamentosCancelados: 0
                     };
                 }
 
@@ -122,6 +122,10 @@ async function carregarListaClientes() {
                 
                 if (dados.status === "concluido") {
                     mapClientes[email].agendamentosFechados++;
+                }
+
+                if (dados.status === "cancelado") {
+                    mapClientes[email].agendamentosCancelados++;
                 }
             }
         });
@@ -189,7 +193,7 @@ function abrirModalVisualizarCliente(idCliente) {
     if (cliente) {
         visualizarNomeCliente.textContent = cliente.nome;
         visualizarEmailCliente.textContent = cliente.email;
-        visualizarTelefoneCliente.textContent = cliente.telefone || "-"; 
+        visualizarTelefoneCliente.textContent = "Não registrado (Auth)"; 
         visualizarTotalCliente.textContent = cliente.totalAgendamentos || 0;
         visualizarAbertosCliente.textContent = cliente.agendamentosAbertos || 0;
         visualizarFechadosCliente.textContent = cliente.agendamentosFechados || 0;
@@ -334,59 +338,66 @@ function gerarPreviaRelatorio() {
     }
 
     // Gera a sessão específica de cada um
-    clientesSelecionadosParaRelatorio.forEach((emailCliente, index) => {
-        gerarSecaoEspecificaCliente(emailCliente, agendamentosFiltrados, paletaDeCores[index % paletaDeCores.length]);
+    clientesSelecionadosParaRelatorio.forEach((emailCliente) => {
+        gerarSecaoEspecificaCliente(emailCliente, agendamentosFiltrados);
     });
 }
 
 function gerarGraficosGeraisMulticlientes(agendamentos) {
     containerGraficosGerais.style.display = "block";
 
-    // 1. Lógica para Gráfico de Status por Cliente
-    const labelsClientes = [];
-    const dadosAbertos = [];
-    const dadosFechados = [];
+    // 1. Lógica para Gráfico de Status (Linha Horizontal Empilhada)
+    let totalAbertos = 0;
+    let totalFechados = 0;
+    let totalCancelados = 0;
 
     clientesSelecionadosParaRelatorio.forEach(email => {
-        const clienteObj = listaDeClientes.find(c => c.email === email);
-        labelsClientes.push(clienteObj ? clienteObj.nome : email);
-        
-        let abertos = 0;
-        let fechados = 0;
-        
         agendamentos.forEach(ag => {
             if (ag.emailCliente === email) {
-                if (ag.status === "pendente") abertos++;
-                if (ag.status === "concluido") fechados++;
+                if (ag.status === "pendente") totalAbertos++;
+                if (ag.status === "concluido") totalFechados++;
+                if (ag.status === "cancelado") totalCancelados++;
             }
         });
-        
-        dadosAbertos.push(abertos);
-        dadosFechados.push(fechados);
     });
 
+    // Ajuste da altura do container para o gráfico horizontal ficar bonito
+    document.getElementById("graficoStatusGeral").parentElement.style.height = "150px";
+    
     const ctxStatus = document.getElementById("graficoStatusGeral").getContext("2d");
     const graficoGeral = new Chart(ctxStatus, {
         type: 'bar',
         data: {
-            labels: labelsClientes,
+            labels: ['Status Geral'],
             datasets: [
                 {
-                    label: 'Atendimentos Abertos',
-                    data: dadosAbertos,
-                    backgroundColor: '#dc3545' 
+                    label: 'Concluídos',
+                    data: [totalFechados],
+                    backgroundColor: '#198754' // Verde
                 },
                 {
-                    label: 'Atendimentos Concluídos',
-                    data: dadosFechados,
-                    backgroundColor: '#198754'
+                    label: 'Em Aberto',
+                    data: [totalAbertos],
+                    backgroundColor: '#6c757d' // Cinza
+                },
+                {
+                    label: 'Cancelados',
+                    data: [totalCancelados],
+                    backgroundColor: '#dc3545' // Vermelho
                 }
             ]
         },
         options: {
+            indexAxis: 'y', // Transforma em linha horizontal
             responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: { stacked: true, display: false },
+                y: { stacked: true, display: false }
+            },
             plugins: {
-                title: { display: true, text: 'Comparativo de Status por Cliente' }
+                title: { display: true, text: 'Visão Geral de Status (Todos os Selecionados)' },
+                legend: { position: 'bottom' }
             }
         }
     });
@@ -406,6 +417,7 @@ function gerarGraficosGeraisMulticlientes(agendamentos) {
     
     const servicoDestaque = labelsServicosGerais.length > 0 ? labelsServicosGerais[0] : "Nenhum";
 
+    document.getElementById("graficoServicosGeral").parentElement.style.height = "250px";
     const ctxServicos = document.getElementById("graficoServicosGeral").getContext("2d");
     const graficoServicosGeral = new Chart(ctxServicos, {
         type: 'bar',
@@ -414,11 +426,12 @@ function gerarGraficosGeraisMulticlientes(agendamentos) {
             datasets: [{
                 label: 'Total de Solicitações',
                 data: dadosServicosGerais.length > 0 ? dadosServicosGerais : [0],
-                backgroundColor: '#0F4168'
+                backgroundColor: '#0F4168' // Azul Daedalo padrão
             }]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
             plugins: { 
                 title: { display: true, text: `Ranking Geral de Serviços (Destaque: ${servicoDestaque})` },
@@ -430,7 +443,7 @@ function gerarGraficosGeraisMulticlientes(agendamentos) {
     instanciasGraficos.push(graficoGeral, graficoServicosGeral);
 }
 
-function gerarSecaoEspecificaCliente(email, agendamentos, corGrafico) {
+function gerarSecaoEspecificaCliente(email, agendamentos) {
     const clienteObj = listaDeClientes.find(c => c.email === email);
     const nomeExibicao = clienteObj ? clienteObj.nome : email;
 
@@ -438,11 +451,13 @@ function gerarSecaoEspecificaCliente(email, agendamentos, corGrafico) {
     
     let abertos = 0;
     let concluidos = 0;
+    let cancelados = 0;
     const frequenciaServicos = {};
 
     agendamentosCliente.forEach(ag => {
         if (ag.status === "pendente") abertos++;
         if (ag.status === "concluido") concluidos++;
+        if (ag.status === "cancelado") cancelados++;
         
         const serv = ag.titulo || "Outro";
         if (!frequenciaServicos[serv]) frequenciaServicos[serv] = 0;
@@ -456,17 +471,35 @@ function gerarSecaoEspecificaCliente(email, agendamentos, corGrafico) {
     const idCanvasStatus = `canvasStatus_${email.replace(/[^a-zA-Z0-9]/g, '')}`;
     const idCanvasServicos = `canvasServicos_${email.replace(/[^a-zA-Z0-9]/g, '')}`;
 
+    // Cria a DIV que engloba o cliente inteiro. A classe 'html2pdf__page-break' garante 1 cliente por página no PDF.
     const secaoHTML = document.createElement("div");
+    secaoHTML.className = "html2pdf__page-break"; 
     secaoHTML.style.marginTop = "40px";
     secaoHTML.style.borderTop = "1px solid #ccc";
     secaoHTML.style.paddingTop = "20px";
 
+    // O flexbox 'justify-content: space-around' garante o alinhamento perfeito pedido
     secaoHTML.innerHTML = `
-        <h3 style="color: ${corGrafico}; text-transform: capitalize;">${nomeExibicao}</h3>
+        <h3 style="color: #0F4168; text-transform: capitalize;">${nomeExibicao}</h3>
         <p style="font-size: 0.9rem; color: #666;">
             <strong>E-mail:</strong> ${email} <br>
             <strong>Total Agendado no Período:</strong> ${agendamentosCliente.length}
         </p>
+
+        <div style="display: flex; justify-content: space-around; align-items: center; background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #dcdcdc; margin: 20px 0;">
+            <div style="text-align: center;">
+                <strong style="color: #198754; font-size: 1.6rem;">${concluidos}</strong>
+                <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">Concluídos</p>
+            </div>
+            <div style="text-align: center;">
+                <strong style="color: #6c757d; font-size: 1.6rem;">${abertos}</strong>
+                <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">Em Aberto</p>
+            </div>
+            <div style="text-align: center;">
+                <strong style="color: #dc3545; font-size: 1.6rem;">${cancelados}</strong>
+                <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">Cancelados</p>
+            </div>
+        </div>
 
         <div style="display: flex; gap: 20px; margin-top: 15px; flex-wrap: wrap;">
             <div class="grafico-container" style="flex: 1; min-width: 250px;">
@@ -480,14 +513,15 @@ function gerarSecaoEspecificaCliente(email, agendamentos, corGrafico) {
 
     containerGraficosIndividuais.appendChild(secaoHTML);
 
+    // Gráfico de Pizza de Status (Agora com as 3 cores padronizadas)
     const ctxStatus = document.getElementById(idCanvasStatus).getContext("2d");
     const graficoStatus = new Chart(ctxStatus, {
         type: 'pie',
         data: {
-            labels: ['Abertos', 'Concluídos'],
+            labels: ['Concluídos', 'Em Aberto', 'Cancelados'],
             datasets: [{
-                data: [abertos, concluidos],
-                backgroundColor: ['#dc3545', '#198754']
+                data: [concluidos, abertos, cancelados],
+                backgroundColor: ['#198754', '#6c757d', '#dc3545'] // Verde, Cinza, Vermelho
             }]
         },
         options: {
@@ -496,6 +530,7 @@ function gerarSecaoEspecificaCliente(email, agendamentos, corGrafico) {
         }
     });
 
+    // Gráfico de Barras dos Serviços (Cor Padrão)
     const ctxServicos = document.getElementById(idCanvasServicos).getContext("2d");
     const graficoServicos = new Chart(ctxServicos, {
         type: 'bar',
@@ -504,7 +539,7 @@ function gerarSecaoEspecificaCliente(email, agendamentos, corGrafico) {
             datasets: [{
                 label: 'Quantidade de Pedidos',
                 data: topServicosDados.length > 0 ? topServicosDados : [0],
-                backgroundColor: corGrafico
+                backgroundColor: '#0F4168' // Azul Padrão para todos
             }]
         },
         options: {
